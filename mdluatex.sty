@@ -1,18 +1,21 @@
 \ProvidesPackage{mdluatex}
-\RequirePackage[autocompile]{gregoriotex}
-
+\RequirePackage[unicode=true]{hyperref}
+\RequirePackage{bookmark}
 \directlua{dofile(kpse.find_file("mdluatex.lua"))}
+
+% La commande \md permet de saisir de courts extraits (sans fin de paragraphe).
 \long\def\md#1{%
     \directlua{direct_md("\luatexluaescapestring{\unexpanded\expandafter{#1}}")}%
 }
 
+% L'environnement markdown permet de saisir des textes complets.
 \newenvironment{markdown}{%
 \directlua{startrecording('markdown')}%
 }{%
 \directlua{direct_md(stoprecording())}%
 }
 
-
-%~ \long\def\md#1{%
-    %~ \directlua{direct_md("\luatexluaescapestring{\unexpanded\expandafter{#1}}")}%
-%~ }
+% La commande \includemd permet l'inclusion de documents markdown externes.
+\def\includemd#1{%
+    \directlua{include_md("\luatexluaescapestring{#1}")}%
+}

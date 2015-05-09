@@ -6,7 +6,6 @@ function direct_md(content)
     err("\nSomething went wrong when executing\n    "..cmd..".\n"
     .."shell-escape mode may not be activated. Try\n\n%s --shell-escape %s.tex\n\nSee the documentation of gregorio or your TeX\ndistribution to automatize it.", tex.formatname, tex.jobname)
   end
-  print(content)
   p:write(content)
   p:close()
   f = io.open(tmpname)
@@ -15,12 +14,26 @@ function direct_md(content)
   os.remove(tmpname)
 end
 
+function include_md(file)
+  local f = io.popen('pandoc -t latex '..file, 'r')
+  tex.print(f:read('*a'):explode('\n'))
+  f:close()
+end
+
 function err(...)
     print(...)
 end
 
-do
+function splitext(str, ext)
+    if str:match(".-%..-") then
+    	local name = string.gsub(str, "(.*)(%." .. ext .. ")", "%1")
+    	return name
+    else
+    	return str
+    end
+end
 
+do
   local mybuf = ''
   end_verb = ''
 
@@ -40,6 +53,7 @@ do
   function stoprecording()
     luatexbase.remove_from_callback('process_input_buffer', 'readbuf')
     local buf_without_end = mybuf:gsub(end_verb,"")
+    mybuf = ''
     return buf_without_end
   end
 end
