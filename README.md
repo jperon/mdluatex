@@ -1,8 +1,6 @@
-# greluatex
+# mdluatex
 
-Obsolète : ces fonctionnalités sont maintenant intégrées directement dans Gregorio.
-Ce dépôt ne reste ici qu'à des fins de tests, en attendant de disparaître.
-Saisie directe d'extraits grégoriens dans un document (Lua)LaTeX.
+Saisie directe d'extraits markdown dans un document (Lua)LaTeX.
 
 
 ## Installation
@@ -13,22 +11,28 @@ Installez d'abord [gregorio et gregoriotex](https://github.com/gregorio-project/
 
 ### Pour un document isolé
 
-Copiez `greluatex.sty` et `greluatex.lua` dans le dossier contenant le document concerné.
+Copiez `mdluatex.sty` et `mdluatex.lua` dans le dossier contenant le document concerné.
 
 ### Pour l'ensemble de votre distribution de LaTeX
 
-Copiez `greluatex.sty` et `greluatex.lua` quelque part dans votre texmf, puis lancez `mktexlsr`.
+Copiez `mdluatex.sty` et `mdluatex.lua` quelque part dans votre texmf, puis lancez `mktexlsr`.
 
 
 ## Utilisation
 
 Dans le préambule de votre document, incluez le package `greluatex` :
 
-    \usepackage{greluatex}
+    \usepackage{mdluatex}
 
-Dès lors, vous pouvez (ce qui n'est pas recommandé, sauf pour des fragments vraiment courts) saisir directement la musique au sein de votre document, grâce à la commande `compilegabc`. Par exemple :
+Dès lors, vous pouvez inclure du markdown directement dans votre document :
 
-    \gabcsnippet{(c4) A(f)ve(c) Ma(d)rí(dh'!iv)a.(h.) (::)}
+    \begin{markdown}
+    #Titre
+
+    ## Sous-titre
+
+    Texte de votre paragraphe.
+    \end{markdown}
 
 Il ne vous reste plus qu'à compiler le document comme d'habitude, avec `lualatex -shell-escape` :
 

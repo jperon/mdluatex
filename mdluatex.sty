@@ -1,9 +1,16 @@
 \ProvidesPackage{mdluatex}
-\RequirePackage[autocompile]{gregoriotex}
+\RequirePackage{kvoptions}
+\RequirePackage{keycommand}
 
 \directlua{dofile(kpse.find_file("mdluatex.lua"))}
 \long\def\md#1{%
     \directlua{direct_md("\luatexluaescapestring{\unexpanded\expandafter{#1}}")}%
+}
+
+\newkeycommand*\includemd[][autres][1]{%
+\directlua{%
+    inclure_md("\luatexluaescapestring{#1}")%
+}%
 }
 
 \newenvironment{markdown}{%
