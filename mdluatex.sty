@@ -1,6 +1,7 @@
 \ProvidesPackage{mdluatex}
 \RequirePackage{kvoptions}
 \RequirePackage{keycommand}
+\RequirePackage[unicode=true]{hyperref}
 
 \directlua{dofile(kpse.find_file("mdluatex.lua"))}
 \long\def\md#1{%
