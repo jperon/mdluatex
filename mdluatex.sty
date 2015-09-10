@@ -3,14 +3,37 @@
 \RequirePackage{keycommand}
 \RequirePackage[unicode=true]{hyperref}
 
+\DeclareStringOption[false]{title}[false]
+\DeclareStringOption[false]{author}[false]
+\DeclareStringOption[false]{date}[false]
+\DeclareStringOption[false]{abstract}[false]
+\ProcessKeyvalOptions*
+
 \directlua{dofile(kpse.find_file("mdluatex.lua"))}
 \long\def\md#1{%
-    \directlua{direct_md("\luatexluaescapestring{\unexpanded\expandafter{#1}}")}%
+    \directlua{direct_md(
+        "\luatexluaescapestring{\unexpanded\expandafter{#1}}",
+        '\mdluatex@title',
+        '\mdluatex@author',
+        '\mdluatex@date',
+        '\mdluatex@abstract'
+    )}%
 }
 
-\newkeycommand*\includemd[][autres][1]{%
+\newkeycommand*\includemd[%
+    title=\mdluatex@title,
+    author=\mdluatex@author,
+    date=\mdluatex@date,
+    abstract=\mdluatex@abstract%
+][autres][1]{%
 \directlua{%
-    inclure_md("\luatexluaescapestring{#1}")%
+    inclure_md(
+        "\luatexluaescapestring{#1}",
+        '\commandkey{title}',
+        '\commandkey{author}',
+        '\commandkey{date}',
+        '\commandkey{abstract}'
+    )%
 }%
 }
 
@@ -21,6 +44,6 @@
 }
 
 
-%~ \long\def\md#1{%
-    %~ \directlua{direct_md("\luatexluaescapestring{\unexpanded\expandafter{#1}}")}%
-%~ }
+\providecommand{\chapauthor}[1]{\emph{#1}\par}
+\providecommand{\chapdate}[1]{\emph{#1}\par}
+\providecommand{\chapabstract}[1]{\emph{#1}\par}
